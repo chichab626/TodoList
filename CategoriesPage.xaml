@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="TodoList.CategoriesPage"
+             Title="CategoriesPage">
+    <Grid RowDefinitions="Auto,*">
+        <Button 
+            Text="Add Category"
+            Clicked="OnAddCategoryClicked"
+            Margin="10"
+            Grid.Row="0"
+            CornerRadius="60"/>
+        <CollectionView 
+            x:Name="CategoryList"
+            Grid.Row="1"
+            ItemsSource="{Binding Categories}"
+            SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                         IsEnabled="{Binding IsDefault, Converter={StaticResource InvertedBoolConverter}}"
+                                         BackgroundColor="Red"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=DeleteCommand}"
+                                         CommandParameter="{Binding .}" />
+                                <SwipeItem Text="Edit"
+                                         IsEnabled="{Binding IsDefault, Converter={StaticResource InvertedBoolConverter}}"
+                                         BackgroundColor="Orange"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=EditCommand}"
+                                         CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Frame BackgroundColor="{Binding Color}"
+                               Margin="15,3,15,5">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                                <Label Text="{Binding Name}" 
+                                       FontSize="16"
+                                       TextColor="White"
+                                       Grid.Column="0"/>
+
+                                <Label Grid.Column="1" 
+                                       Text="{Binding IsDefault, Converter={StaticResource BoolToDefaultTextConverter}}"
+                                       FontSize="12"
+                                       TextColor="White"
+                                       Opacity="0.8"
+                                       Margin="0,0,10,0"/>
+
+                                <!-- Windows-specific buttons -->
+                                <Button Grid.Column="2"
+                                        Text="Edit"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=EditCommand}"
+                                        CommandParameter="{Binding .}"
+                                        IsEnabled="{Binding IsDefault, Converter={StaticResource InvertedBoolConverter}}"
+                                        IsVisible="{OnPlatform WinUI=true, Default=false}"
+                                        BackgroundColor="Orange"
+                                        TextColor="White"
+                                        HeightRequest="30"
+                                        Margin="0,0,5,0"
+                                        Padding="10,0"/>
+
+                                <Button Grid.Column="3"
+                                        Text="Delete"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=DeleteCommand}"
+                                        CommandParameter="{Binding .}"
+                                        IsEnabled="{Binding IsDefault, Converter={StaticResource InvertedBoolConverter}}"
+                                        IsVisible="{OnPlatform WinUI=true, Default=false}"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        HeightRequest="30"
+                                        Padding="10,0"/>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

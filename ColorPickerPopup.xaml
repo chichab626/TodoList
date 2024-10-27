@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="TodoList.ColorPickerPopup">
+    <Frame BackgroundColor="White"
+           Padding="20"
+           WidthRequest="300"
+           HeightRequest="400">
+        <Grid RowDefinitions="*,Auto">
+            <CollectionView ItemsSource="{Binding Colors}"
+                           SelectionMode="Single"
+                           SelectionChanged="OnColorSelected">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" 
+                                    Span="5"
+                                    VerticalItemSpacing="10"
+                                    HorizontalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <!-- <DataTemplate>
+                        <Frame BackgroundColor="{Binding}"
+                               HeightRequest="40"
+                               WidthRequest="40"
+                               Padding="0"
+                               HasShadow="True">
+                        </Frame>
+                    </DataTemplate> -->
+                    <DataTemplate>
+                        <Frame BackgroundColor="{Binding}"
+           HeightRequest="40"
+           WidthRequest="40"
+           Padding="0"
+           HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnColorFrameTapped" CommandParameter="{Binding}"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Cancel"
+                    Grid.Row="1"
+                    Margin="0,20,0,0"
+                    Clicked="OnCancelClicked"/>
+        </Grid>
+    </Frame>
+</toolkit:Popup>
