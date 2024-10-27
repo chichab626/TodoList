@@ -18,14 +18,6 @@
                                     HorizontalItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <!-- <DataTemplate>
-                        <Frame BackgroundColor="{Binding}"
-                               HeightRequest="40"
-                               WidthRequest="40"
-                               Padding="0"
-                               HasShadow="True">
-                        </Frame>
-                    </DataTemplate> -->
                     <DataTemplate>
                         <Frame BackgroundColor="{Binding}"
            HeightRequest="40"
