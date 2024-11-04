@@ -24,6 +24,8 @@ namespace TodoList
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddTransient<CategoriesPage>();
             builder.Services.AddTransient<TodoListPage>();
+            builder.Services.AddTransient<CategoryEditPage>();
+            builder.Services.AddTransient<TodoDetailPage>();
             return builder.Build();
 
         }

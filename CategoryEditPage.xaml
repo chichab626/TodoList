@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="TodoList.CategoryEditPage"
+             Title="{Binding PageTitle}">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <!-- Category Name Entry -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Category Name"/>
+            <Entry Text="{Binding CategoryName}" 
+                   Placeholder="Enter category name"/>
+
+            <Label Text="Category Color"/>
+            <!-- Color Selection Grid -->
+            <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Colors}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedColor}"
+                        Margin="0,20">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" 
+                                Span="5"
+                                VerticalItemSpacing="10"
+                                HorizontalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="{Binding}"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           Padding="0"
+                           HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=SelectColorCommand}"
+                                                CommandParameter="{Binding}"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+
+
+        <!-- Action Buttons -->
+        <HorizontalStackLayout Grid.Row="2" 
+                              Spacing="10" 
+                              HorizontalOptions="End">
+            <Button Text="Cancel"
+                    Command="{Binding CancelCommand}"/>
+            <Button Text="Save"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource Primary}"/>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

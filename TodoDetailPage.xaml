@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoList.TodoDetailPage"
+             Title="{Binding PageTitle}">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Title"/>
+            <Entry x:Name="TitleEntry"
+               Placeholder="Enter title"
+               Text="{Binding Todo.Title}" />
+
+            <Label Text="Description"/>
+            <Editor x:Name="DescriptionEditor"
+                Placeholder="Enter description"
+                HeightRequest="100"
+                Text="{Binding Todo.Description}" />
+
+            <Label Text="Category"/>
+            <Picker x:Name="CategoryPicker"
+                Title="Select a Category"
+                ItemsSource="{Binding Categories}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedCategory}" />
+
+        </VerticalStackLayout>
+
+        <!-- Action Buttons -->
+        <HorizontalStackLayout Grid.Row="2" 
+                              Spacing="10" 
+                              HorizontalOptions="End">
+            <Button Text="Cancel"
+                    Command="{Binding CancelCommand}"/>
+            <Button Text="Save"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource Primary}"/>
+        </HorizontalStackLayout>
+    </Grid>
+
+</ContentPage>

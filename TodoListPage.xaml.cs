@@ -87,6 +87,13 @@ public partial class TodoListPage : ContentPage
     private async void OnAddTodoClicked(object sender, EventArgs e)
     {
 
+        var page = new NavigationPage(new TodoDetailPage(_databaseService));
+        page.Disappearing += async (s, args) => await LoadTodosAsync();
+        await Navigation.PushModalAsync(page);
+    }    
+    private async void OnAddTodoClicked_old(object sender, EventArgs e)
+    {
+
         string title = await DisplayPromptAsync("New Todo", "Enter todo title");
         if (string.IsNullOrWhiteSpace(title))
             return;
@@ -116,6 +123,26 @@ public partial class TodoListPage : ContentPage
     }
 
     private async void OnEditSwipeItemInvoked(object sender, EventArgs e)
+    {
+        TodoViewModel todo = null;
+
+        if (sender is SwipeItem swipeItem)
+        {
+            todo = swipeItem.CommandParameter as TodoViewModel;
+        }
+        else if (sender is Button button)
+        {
+            todo = button.CommandParameter as TodoViewModel;
+        }
+
+        if (todo == null) return;
+
+        var page = new NavigationPage(new TodoDetailPage(_databaseService, todo));
+        page.Disappearing += async (s, args) => await LoadTodosAsync();
+        await Navigation.PushModalAsync(page);
+    }
+
+    private async void OnEditSwipeItemInvoked_old(object sender, EventArgs e)
     {
         TodoViewModel todo = null;
 
@@ -203,7 +230,7 @@ public partial class TodoListPage : ContentPage
                 CreatedAt = todo.CreatedAt // Keep CreatedAt unchanged
             };
             await _databaseService.SaveTodoAsync(updatedTodo);
-            await LoadTodosAsync();
+            //await LoadTodosAsync();
 
         }
     }

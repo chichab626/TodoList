@@ -20,10 +20,10 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="{Binding}"
-           HeightRequest="40"
-           WidthRequest="40"
-           Padding="0"
-           HasShadow="True">
+                               HeightRequest="40"
+                               WidthRequest="40"
+                               Padding="0"
+                               HasShadow="True">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnColorFrameTapped" CommandParameter="{Binding}"/>
                             </Frame.GestureRecognizers>

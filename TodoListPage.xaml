@@ -4,71 +4,83 @@
              x:Class="TodoList.TodoListPage"
              Title="Todo List">
     <Grid RowDefinitions="Auto,*">
-        <Button 
-            Text="Add Todo"
-            Clicked="OnAddTodoClicked"
-            Margin="10"
-            Grid.Row="0" 
-            CornerRadius="60"/>
-
         <RefreshView Grid.Row="1"
                      Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView 
+            <ScrollView>
+                <CollectionView 
                 x:Name="TodoList"
                 ItemsSource="{Binding Todos}"
                 SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Delete"
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
                                         BackgroundColor="Red"
                                         Invoked="OnDeleteSwipeItemInvoked"
                                         CommandParameter="{Binding .}" />
-                                    <SwipeItem Text="Edit"
+                                        <SwipeItem Text="Edit"
                                         BackgroundColor="Orange"
                                         Invoked="OnEditSwipeItemInvoked"
                                         CommandParameter="{Binding .}" />
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-                            <Frame Margin="15,3,15,5" BorderColor="{Binding CategoryColor}">
-                                <Grid ColumnDefinitions="Auto,*,Auto">
-                                    <CheckBox IsChecked="{Binding IsCompleted}"
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame Margin="15,3,15,5" BorderColor="{Binding CategoryColor}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <CheckBox IsChecked="{Binding IsCompleted}" 
                                               CheckedChanged="OnTodoCheckedChanged"/>
-                                    <VerticalStackLayout Grid.Column="1">
-                                        <Label Text="{Binding Title}" 
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{Binding Title}" 
                                                FontSize="16"
                                                TextDecorations="{Binding IsCompleted, 
                                                 Converter={StaticResource BoolToStrikethroughConverter}}"/>
-                                        <Label Text="{Binding Description}" 
+                                            <Label Text="{Binding Description}" 
                                                FontSize="12"
-                                               TextColor="Gray"/>
-                                    </VerticalStackLayout>
-                                    <VerticalStackLayout Grid.Column="2">
-                                        <Label Text="{Binding CategoryName}" 
+                                               TextColor="Gray"
+                                               IsVisible="{Binding Description, Converter={StaticResource StringIsNotEmptyConverter}}"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="2">
+                                            <Label Text="{Binding CategoryName}" 
                                                FontSize="10"
                                                TextColor="{Binding CategoryColor}"/>
 
-                                        <StackLayout Orientation="Horizontal">
-                                            <!-- Windows-Specific Buttons -->
-                                            <Button Text="Edit"
+                                            <StackLayout Orientation="Horizontal">
+                                                <!-- Windows-Specific Buttons -->
+                                                <Button Text="Edit"
                                                     Clicked="OnEditSwipeItemInvoked"
                                                     CommandParameter="{Binding .}"
                                                     IsVisible="{OnPlatform Default=False, WinUI=True}" />
-                                            <Button Text="Delete"
+                                                <Button Text="Delete"
                                                     Clicked="OnDeleteSwipeItemInvoked"
                                                     CommandParameter="{Binding .}"
                                                     IsVisible="{OnPlatform Default=False, WinUI=True}" />
-                                        </StackLayout>
-                                    </VerticalStackLayout>
-                                </Grid>
-                            </Frame>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+
         </RefreshView>
+
+        <!-- Floating Action Button -->
+        <Button 
+            Grid.Row="2"
+            Text="+" 
+            Clicked="OnAddTodoClicked"
+            Margin="10"
+            TextColor="White"
+            CornerRadius="50"
+            FontSize="24"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            WidthRequest="70"
+            HeightRequest="70"
+            Padding="0" />
     </Grid>
 </ContentPage>

@@ -70,6 +70,13 @@ public partial class CategoriesPage : ContentPage
 
     private async void OnAddCategoryClicked(object sender, EventArgs e)
     {
+        var page = new NavigationPage(new CategoryEditPage(_databaseService));
+        page.Disappearing += async (s, args) => await LoadCategoriesAsync();
+        await Navigation.PushModalAsync(page);
+    }
+
+    private async void OnAddCategoryClicked_old(object sender, EventArgs e)
+    {
         string name = await DisplayPromptAsync("New Category", "Enter category name");
         if (string.IsNullOrWhiteSpace(name))
             return;
@@ -98,7 +105,7 @@ public partial class CategoriesPage : ContentPage
         }
     }
 
-    private async Task OnEditCategoryAsync(Category category)
+    private async Task OnEditCategoryAsync_old(Category category)
     {
         if (category == null) return;
 
@@ -124,6 +131,15 @@ public partial class CategoriesPage : ContentPage
         {
             await DisplayAlert("Error", ex.Message, "OK");
         }
+    }
+
+    private async Task OnEditCategoryAsync(Category category)
+    {
+        if (category == null) return;
+
+        var page = new NavigationPage(new CategoryEditPage(_databaseService, category));
+        page.Disappearing += async (s, args) => await LoadCategoriesAsync();
+        await Navigation.PushModalAsync(page);
     }
 
     private async Task OnDeleteCategoryAsync(Category category)

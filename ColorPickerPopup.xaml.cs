@@ -1,5 +1,4 @@
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Graphics; // Ensure this namespace is used for Colors
 
 namespace TodoList;
 
@@ -34,7 +33,6 @@ public partial class ColorPickerPopup : Popup
         if (e.CurrentSelection.FirstOrDefault() is Color selectedColor)
         {
             SelectedColor = selectedColor;
-            Console.WriteLine($"Selected Color: {SelectedColor}");
             Close(selectedColor);
         }
     }
@@ -44,7 +42,6 @@ public partial class ColorPickerPopup : Popup
         if (sender is Frame frame && frame.BackgroundColor is Color tappedColor)
         {
             SelectedColor = tappedColor;
-            Console.WriteLine($"Tapped Color: {SelectedColor}"); // Log the tapped color
             Close(tappedColor);
         }
     }
