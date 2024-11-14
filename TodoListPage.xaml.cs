@@ -73,7 +73,9 @@ public partial class TodoListPage : ContentPage
                 Description = t.Description,
                 IsCompleted = t.IsCompleted,
                 CreatedAt = t.CreatedAt, // Keep CreatedAt in TodoViewModel
-                Category = categories.FirstOrDefault(c => c.Id == t.CategoryId) // Set the Category object
+                Category = categories.FirstOrDefault(c => c.Id == t.CategoryId), // Set the Category object
+                DueDate = t.DueDate,
+                DueTime = t.DueTime
             }).ToList();
 
             Todos = new ObservableCollection<TodoViewModel>(todoViewModels);

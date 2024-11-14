@@ -18,21 +18,10 @@
 
             <Label Text="Category"/>
             <Picker x:Name="CategoryPicker"
-                    Title="Select a Category"
-                    ItemsSource="{Binding Categories}"
-                    ItemDisplayBinding="{Binding Name}"
-                    SelectedItem="{Binding SelectedCategory}" />
-
-            <!-- Date and Time Pickers -->
-            <Label Text="Due Date"/>
-            <DatePicker x:Name="DatePicker"
-                        Date="{Binding Todo.DueDate}"
-                        Format="D" />
-
-            <Label Text="Due Time"/>
-            <TimePicker x:Name="TimePicker"
-                        Time="{Binding Todo.DueTime}" 
-                        Format="t" />
+                Title="Select a Category"
+                ItemsSource="{Binding Categories}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedCategory}" />
 
         </VerticalStackLayout>
 

@@ -56,35 +56,39 @@ public partial class TodoDetailPage : ContentPage
             return;
         }
 
+        // Combine DueDate and DueTime into a single DateTime object
+        DateTime selectedDueDateTime = Todo.DueDate.Date.Add(Todo.DueTime);
+
+        // Check if the selected due date and time is in the past
+        if (selectedDueDateTime < DateTime.Now)
+        {
+            await DisplayAlert("Error", "The due date and time cannot be in the past", "OK");
+            return;
+        }
+
         try
         {
             // Create a new TodoItem with the provided details
-            TodoItem todoItem;
+            TodoItem todoItem = new TodoItem
+            {
+                Id = Todo.Id,
+                Title = Todo.Title,
+                Description = Todo.Description,
+                IsCompleted = Todo.IsCompleted,
+                CategoryId = SelectedCategory.Id,
+
+                // Update DueDate and DueTime
+                DueDate = Todo.DueDate,
+                DueTime = Todo.DueTime
+            };
 
             if (Todo.Id == 0)
             {
-                // Create a new todo item
-                todoItem = new TodoItem
-                {
-                    Title = Todo.Title,
-                    Description = Todo.Description,
-                    IsCompleted = Todo.IsCompleted,
-                    CategoryId = SelectedCategory.Id, // Use the selected category
-                    CreatedAt = DateTime.Now // Set CreatedAt only for new todos
-                };
+                todoItem.CreatedAt = DateTime.Now;
             }
             else
             {
-                // Update the existing todo item
-                todoItem = new TodoItem
-                {
-                    Id = Todo.Id,
-                    Title = Todo.Title,
-                    Description = Todo.Description,
-                    IsCompleted = Todo.IsCompleted,
-                    CategoryId = SelectedCategory.Id, // Use the selected category
-                    CreatedAt = Todo.CreatedAt // Keep the original CreatedAt
-                };
+                todoItem.CreatedAt = Todo.CreatedAt;
             }
 
             // Save the todo item to the database

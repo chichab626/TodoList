@@ -13,8 +13,6 @@ namespace TodoList
     {
         private bool _isCompleted;
         private Category _category;
-        private DateTime _dueDate = DateTime.Now;
-        private TimeSpan _dueTime = DateTime.Now.TimeOfDay;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -53,36 +51,6 @@ namespace TodoList
         public string CategoryColor => Category?.Color ?? "#808080";
 
         public DateTime CreatedAt { get; set; }
-
-        // New properties for Due Date and Due Time
-        public DateTime DueDate
-        {
-            get => _dueDate;
-            set
-            {
-                _dueDate = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public TimeSpan DueTime
-        {
-            get => _dueTime;
-            set
-            {
-                _dueTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsDueExpired
-        {
-            get
-            {
-                DateTime dueDateTime = DueDate.Date.Add(DueTime);
-                return dueDateTime < DateTime.Now;
-            }
-        }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
