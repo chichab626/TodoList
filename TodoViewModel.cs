@@ -16,6 +16,7 @@ namespace TodoList
         private DateTime _dueDate = DateTime.Now;
         private TimeSpan _dueTime = DateTime.Now.TimeOfDay;
 
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Id { get; set; }
@@ -83,6 +84,7 @@ namespace TodoList
                 return dueDateTime < DateTime.Now;
             }
         }
+
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

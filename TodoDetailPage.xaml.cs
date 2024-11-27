@@ -6,7 +6,7 @@ namespace TodoList;
 
 public partial class TodoDetailPage : ContentPage
 {
-    private readonly DatabaseService _databaseService;
+    private readonly RestService _restService;
     private readonly Category _category;
     public TodoViewModel Todo { get; set; }
     public ObservableCollection<Category> Categories { get; }
@@ -24,9 +24,9 @@ public partial class TodoDetailPage : ContentPage
         }
     }
 
-    public TodoDetailPage(DatabaseService databaseService, TodoViewModel todo = null)
+    public TodoDetailPage(RestService restService, TodoViewModel todo = null)
 	{
-        _databaseService = databaseService;
+        _restService = restService;
         Todo = todo ?? new TodoViewModel();
         PageTitle = Todo.Id == 0 ? "Add Todo" : "Edit Todo";
         Categories = new ObservableCollection<Category>();
@@ -92,7 +92,7 @@ public partial class TodoDetailPage : ContentPage
             }
 
             // Save the todo item to the database
-            await _databaseService.SaveTodoAsync(todoItem);
+            await _restService.SaveTodoAsync(todoItem);
 
             // Navigate back to the TodoListPage
             await Navigation.PopModalAsync();
@@ -110,7 +110,7 @@ public partial class TodoDetailPage : ContentPage
         try
         {
             // Retrieve categories from the database
-            var categoriesFromDb = await _databaseService.GetCategoriesAsync();
+            var categoriesFromDb = await _restService.GetCategoriesAsync();
 
             // Clear existing categories (if any) and load the new data
             Categories.Clear();

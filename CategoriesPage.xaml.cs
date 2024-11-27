@@ -7,14 +7,14 @@ namespace TodoList;
 
 public partial class CategoriesPage : ContentPage
 {
-    private readonly DatabaseService _databaseService;
+    private readonly RestService _restService;
     private ObservableCollection<Category> _categories;
     private bool _isRefreshing;
 
-    public CategoriesPage(DatabaseService databaseService)
+    public CategoriesPage(RestService restService)
     {
         InitializeComponent();
-        _databaseService = databaseService;
+        _restService = restService;
         _categories = new ObservableCollection<Category>();
         BindingContext = this;
     }
@@ -54,7 +54,7 @@ public partial class CategoriesPage : ContentPage
         try
         {
             IsRefreshing = true;
-            var categories = await _databaseService.GetCategoriesAsync();
+            var categories = await _restService.GetCategoriesAsync();
 
             Categories.Clear();
             foreach (var category in categories)
@@ -70,7 +70,7 @@ public partial class CategoriesPage : ContentPage
 
     private async void OnAddCategoryClicked(object sender, EventArgs e)
     {
-        var page = new NavigationPage(new CategoryEditPage(_databaseService));
+        var page = new NavigationPage(new CategoryEditPage(_restService));
         page.Disappearing += async (s, args) => await LoadCategoriesAsync();
         await Navigation.PushModalAsync(page);
     }
@@ -96,7 +96,7 @@ public partial class CategoriesPage : ContentPage
 
         try
         {
-            await _databaseService.SaveCategoryAsync(category);
+            await _restService.SaveCategoryAsync(category);
             await LoadCategoriesAsync();
         }
         catch (Exception ex)
@@ -124,7 +124,7 @@ public partial class CategoriesPage : ContentPage
 
         try
         {
-            await _databaseService.SaveCategoryAsync(category);
+            await _restService.SaveCategoryAsync(category);
             await LoadCategoriesAsync();
         }
         catch (Exception ex)
@@ -137,7 +137,7 @@ public partial class CategoriesPage : ContentPage
     {
         if (category == null) return;
 
-        var page = new NavigationPage(new CategoryEditPage(_databaseService, category));
+        var page = new NavigationPage(new CategoryEditPage(_restService, category));
         page.Disappearing += async (s, args) => await LoadCategoriesAsync();
         await Navigation.PushModalAsync(page);
     }
@@ -154,7 +154,7 @@ public partial class CategoriesPage : ContentPage
 
         try
         {
-            await _databaseService.DeleteCategoryAsync(category.Id);
+            await _restService.DeleteCategoryAsync(category.Id);
             await LoadCategoriesAsync();
         }
         catch (Exception ex)

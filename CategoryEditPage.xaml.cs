@@ -5,16 +5,16 @@ namespace TodoList;
 
 public partial class CategoryEditPage : ContentPage
 {
-    private readonly DatabaseService _databaseService;
+    private readonly RestService _restService;
     private readonly Category _category;
     private readonly bool _isEdit;
     private string _categoryName;
     private Color _selectedColor;
 
-    public CategoryEditPage(DatabaseService databaseService, Category category = null)
+    public CategoryEditPage(RestService restService, Category category = null)
     {
         InitializeComponent();
-        _databaseService = databaseService;
+        _restService = restService;
         _category = category ?? new Category { IsDefault = false };
         _isEdit = category != null;
 
@@ -99,7 +99,7 @@ public partial class CategoryEditPage : ContentPage
             _category.Name = CategoryName;
             _category.Color = SelectedColor.ToHex();
 
-            await _databaseService.SaveCategoryAsync(_category);
+            await _restService.SaveCategoryAsync(_category);
             await Navigation.PopModalAsync();
         }
         catch (Exception ex)

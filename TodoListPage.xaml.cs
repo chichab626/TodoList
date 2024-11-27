@@ -6,16 +6,14 @@ namespace TodoList;
 
 public partial class TodoListPage : ContentPage
 {
-    private readonly DatabaseService _databaseService;
     private readonly RestService _restService;
     private ObservableCollection<TodoViewModel> _todos;
     private ObservableCollection<Category> _categories;
     private bool _isRefreshing;
 
-    public TodoListPage(DatabaseService databaseService, RestService restService)
+    public TodoListPage(RestService restService)
     {
         InitializeComponent();
-        _databaseService = databaseService;
         _restService = restService;
         _todos = new ObservableCollection<TodoViewModel>();
         BindingContext = this;
@@ -58,7 +56,7 @@ public partial class TodoListPage : ContentPage
 
     private async Task LoadCategoriesAsync()
     {
-        Categories = new ObservableCollection<Category>(await _databaseService.GetCategoriesAsync());
+        Categories = new ObservableCollection<Category>(await _restService.GetCategoriesAsync());
     }
 
     private async Task LoadTodosAsync()
@@ -92,7 +90,7 @@ public partial class TodoListPage : ContentPage
     private async void OnAddTodoClicked(object sender, EventArgs e)
     {
 
-        var page = new NavigationPage(new TodoDetailPage(_databaseService));
+        var page = new NavigationPage(new TodoDetailPage(_restService));
         page.Disappearing += async (s, args) => await LoadTodosAsync();
         await Navigation.PushModalAsync(page);
     }    
@@ -106,7 +104,7 @@ public partial class TodoListPage : ContentPage
         string description = await DisplayPromptAsync("New Todo", "Enter description (optional)");
 
         // Prompt user to select a category (you may want to implement a method for this)
-        var categories = await _databaseService.GetCategoriesAsync();
+        var categories = await _restService.GetCategoriesAsync();
         var selectedCategory = await DisplayActionSheet("Select a category", "Cancel", null,
             categories.Select(c => c.Name).ToArray());
 
@@ -123,7 +121,7 @@ public partial class TodoListPage : ContentPage
             CreatedAt = DateTime.Now // Set CreatedAt when creating a new TodoItem
         };
 
-        await _databaseService.SaveTodoAsync(todo);
+        await _restService.SaveTodoAsync(todo);
         await LoadTodosAsync();
     }
 
@@ -142,7 +140,7 @@ public partial class TodoListPage : ContentPage
 
         if (todo == null) return;
 
-        var page = new NavigationPage(new TodoDetailPage(_databaseService, todo));
+        var page = new NavigationPage(new TodoDetailPage(_restService, todo));
         page.Disappearing += async (s, args) => await LoadTodosAsync();
         await Navigation.PushModalAsync(page);
     }
@@ -169,7 +167,7 @@ public partial class TodoListPage : ContentPage
 
         string description = await DisplayPromptAsync("Edit Todo", "Enter new description", initialValue: todo.Description);
 
-        var categories = await _databaseService.GetCategoriesAsync();
+        var categories = await _restService.GetCategoriesAsync();
         var selectedCategory = await DisplayActionSheet("Select a category", "Cancel", null,
             categories.Select(c => c.Name).ToArray());
 
@@ -190,7 +188,7 @@ public partial class TodoListPage : ContentPage
         };
 
         // Save updated todo item to the database
-        await _databaseService.SaveTodoAsync(updatedTodo);
+        await _restService.SaveTodoAsync(updatedTodo);
         await LoadTodosAsync();
     }
 
@@ -213,7 +211,7 @@ public partial class TodoListPage : ContentPage
         bool answer = await DisplayAlert("Delete Todo", "Are you sure you want to delete this todo?", "Yes", "No");
         if (!answer) return;
 
-        await _databaseService.DeleteTodoAsync(todo.Id);
+        await _restService.DeleteTodoAsync(todo.Id);
         await LoadTodosAsync();
     }
 
@@ -233,7 +231,7 @@ public partial class TodoListPage : ContentPage
                 CategoryId = todo.Category.Id,
                 CreatedAt = todo.CreatedAt // Keep CreatedAt unchanged
             };
-            await _databaseService.SaveTodoAsync(updatedTodo);
+            await _restService.SaveTodoAsync(updatedTodo);
             //await LoadTodosAsync();
 
         }
