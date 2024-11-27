@@ -16,8 +16,6 @@ namespace TodoList.Data
         public bool IsCompleted { get; set; }
         public int CategoryId { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        // Add new properties for Due Date and Due Time
         public DateTime DueDate { get; set; }
         public TimeSpan DueTime { get; set; }
     }

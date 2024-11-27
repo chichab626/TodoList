@@ -7,18 +7,21 @@ namespace TodoList;
 public partial class TodoListPage : ContentPage
 {
     private readonly DatabaseService _databaseService;
+    private readonly RestService _restService;
     private ObservableCollection<TodoViewModel> _todos;
     private ObservableCollection<Category> _categories;
     private bool _isRefreshing;
 
-    public TodoListPage(DatabaseService databaseService)
+    public TodoListPage(DatabaseService databaseService, RestService restService)
     {
         InitializeComponent();
         _databaseService = databaseService;
+        _restService = restService;
         _todos = new ObservableCollection<TodoViewModel>();
         BindingContext = this;
 
         LoadTodosAsync();
+        
     }
 
     public ObservableCollection<TodoViewModel> Todos
@@ -63,8 +66,8 @@ public partial class TodoListPage : ContentPage
         try
         {
             IsRefreshing = true;
-            var todos = await _databaseService.GetTodosAsync();
-            var categories = await _databaseService.GetCategoriesAsync();
+            var todos = await _restService.GetTodosAsync();
+            var categories = await _restService.GetCategoriesAsync();
 
             var todoViewModels = todos.Select(t => new TodoViewModel
             {
@@ -166,7 +169,6 @@ public partial class TodoListPage : ContentPage
 
         string description = await DisplayPromptAsync("Edit Todo", "Enter new description", initialValue: todo.Description);
 
-        // Prompt user to select a category (you may want to implement a method for this)
         var categories = await _databaseService.GetCategoriesAsync();
         var selectedCategory = await DisplayActionSheet("Select a category", "Cancel", null,
             categories.Select(c => c.Name).ToArray());
@@ -174,7 +176,7 @@ public partial class TodoListPage : ContentPage
         // Find the selected category by its name
         var category = categories.FirstOrDefault(c => c.Name == selectedCategory);
 
-        if (category == null) return; // If user cancels or selects an invalid category
+        if (category == null) return; 
 
         // Create updated todo item with new values
         var updatedTodo = new TodoItem

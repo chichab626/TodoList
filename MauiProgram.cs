@@ -21,6 +21,7 @@ namespace TodoList
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<RestService>();
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddTransient<CategoriesPage>();
             builder.Services.AddTransient<TodoListPage>();
