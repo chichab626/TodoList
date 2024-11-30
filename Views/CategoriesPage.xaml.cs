@@ -1,4 +1,3 @@
-using CommunityToolkit.Maui.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TodoList.Data;
@@ -75,63 +74,7 @@ public partial class CategoriesPage : ContentPage
         await Navigation.PushModalAsync(page);
     }
 
-    private async void OnAddCategoryClicked_old(object sender, EventArgs e)
-    {
-        string name = await DisplayPromptAsync("New Category", "Enter category name");
-        if (string.IsNullOrWhiteSpace(name))
-            return;
-
-        var colorPicker = new ColorPickerPopup();
-        var result = await this.ShowPopupAsync(colorPicker);
-
-        if (result is not Color selectedColor)
-            return;
-
-        var category = new Category
-        {
-            Name = name,
-            Color = selectedColor.ToHex(),
-            IsDefault = false
-        };
-
-        try
-        {
-            await _restService.SaveCategoryAsync(category);
-            await LoadCategoriesAsync();
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", ex.Message, "OK");
-        }
-    }
-
-    private async Task OnEditCategoryAsync_old(Category category)
-    {
-        if (category == null) return;
-
-        string name = await DisplayPromptAsync("Edit Category", "Enter new name", initialValue: category.Name);
-        if (string.IsNullOrWhiteSpace(name))
-            return;
-
-        var colorPicker = new ColorPickerPopup();
-        var result = await this.ShowPopupAsync(colorPicker);
-
-        if (result is not Color selectedColor)
-            return;
-
-        category.Name = name;
-        category.Color = selectedColor.ToHex();
-
-        try
-        {
-            await _restService.SaveCategoryAsync(category);
-            await LoadCategoriesAsync();
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", ex.Message, "OK");
-        }
-    }
+    
 
     private async Task OnEditCategoryAsync(Category category)
     {

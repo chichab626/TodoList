@@ -11,7 +11,7 @@
     TabBarUnselectedColor="LightGray">
 
     <TabBar>
-        <Tab Title="About" Icon="about_icon.png">
+        <Tab Title="Calendar" Icon="about_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
         </Tab>
         <Tab Title="To-Do List" Icon="todo_icon.png">
