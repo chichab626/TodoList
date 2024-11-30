@@ -6,33 +6,25 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TodoList.Data;
+using TodoList.ViewModels;
 
 namespace TodoList
 {
-    public class TodoViewModel : INotifyPropertyChanged
+    public class TodoViewModel : BaseViewModel
     {
         private bool _isCompleted;
         private Category _category;
         private DateTime _dueDate = DateTime.Now;
         private TimeSpan _dueTime = DateTime.Now.TimeOfDay;
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
         public bool IsCompleted
         {
             get => _isCompleted;
-            set
-            {
-                if (_isCompleted != value)
-                {
-                    _isCompleted = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _isCompleted, value);
         }
 
         public Category Category
@@ -40,10 +32,8 @@ namespace TodoList
             get => _category;
             set
             {
-                if (_category != value)
+                if (SetProperty(ref _category, value))
                 {
-                    _category = value;
-                    OnPropertyChanged();
                     OnPropertyChanged(nameof(CategoryName));
                     OnPropertyChanged(nameof(CategoryColor));
                 }
@@ -55,25 +45,16 @@ namespace TodoList
 
         public DateTime CreatedAt { get; set; }
 
-        // New properties for Due Date and Due Time
         public DateTime DueDate
         {
             get => _dueDate;
-            set
-            {
-                _dueDate = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _dueDate, value);
         }
 
         public TimeSpan DueTime
         {
             get => _dueTime;
-            set
-            {
-                _dueTime = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _dueTime, value);
         }
 
         public bool IsDueExpired
@@ -83,12 +64,6 @@ namespace TodoList
                 DateTime dueDateTime = DueDate.Date.Add(DueTime);
                 return dueDateTime < DateTime.Now;
             }
-        }
-
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

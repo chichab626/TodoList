@@ -19,11 +19,11 @@
                                     <SwipeItems>
                                         <SwipeItem Text="Delete"
                                         BackgroundColor="Red"
-                                        Invoked="OnDeleteSwipeItemInvoked"
+                                        Invoked="OnDeleteActionInvoked"
                                         CommandParameter="{Binding .}" />
                                         <SwipeItem Text="Edit"
                                         BackgroundColor="Orange"
-                                        Invoked="OnEditSwipeItemInvoked"
+                                        Invoked="OnEditActionInvoked"
                                         CommandParameter="{Binding .}" />
                                     </SwipeItems>
                                 </SwipeView.RightItems>
@@ -67,11 +67,11 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <!-- Windows-Specific Buttons -->
                                                 <Button Text="Edit"
-                                                    Clicked="OnEditSwipeItemInvoked"
+                                                    Clicked="OnEditActionInvoked"
                                                     CommandParameter="{Binding .}"
                                                     IsVisible="{OnPlatform Default=False, WinUI=True}" />
                                                 <Button Text="Delete"
-                                                    Clicked="OnDeleteSwipeItemInvoked"
+                                                    Clicked="OnDeleteActionInvoked"
                                                     CommandParameter="{Binding .}"
                                                     IsVisible="{OnPlatform Default=False, WinUI=True}" />
                                             </StackLayout>
