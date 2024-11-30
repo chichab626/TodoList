@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoList
+namespace TodoList.Converters
 {
     public class InvertedBoolConverter : IValueConverter
     {

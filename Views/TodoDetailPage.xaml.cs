@@ -119,7 +119,15 @@ public partial class TodoDetailPage : ContentPage
                 Categories.Add(category);
             }
 
-            SelectedCategory = Categories.FirstOrDefault(c => c.Id == Todo.Category.Id);
+            if (Todo?.Category != null)
+            {
+                SelectedCategory = Categories.FirstOrDefault(c => c.Id == Todo.Category.Id);
+            }
+            else
+            {
+                // Set to the first category if Todo.Category is null and Categories is not empty
+                SelectedCategory = Categories.FirstOrDefault();
+            }
         }
         catch (Exception ex)
         {
