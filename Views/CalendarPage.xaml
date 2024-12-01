@@ -62,8 +62,9 @@
         </controls:Calendar.EventTemplate>
         <controls:Calendar.EmptyTemplate>
             <DataTemplate>
-                <StackLayout>
-                    <Label Text="NO EVENTS FOR THE SELECTED DATE" 
+                <StackLayout Margin="50">
+                    <Image Source="calendar.png" Opacity="0.2" HeightRequest="50" Margin="7"/>
+                    <Label Text="NO TODOs FOR THE SELECTED DATE" Opacity="0.5" 
                            HorizontalTextAlignment="Center" 
                            Margin="0,5,0,5" />
                 </StackLayout>
