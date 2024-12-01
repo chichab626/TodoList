@@ -101,6 +101,7 @@ public partial class CategoryEditPage : ContentPage
 
             await _restService.SaveCategoryAsync(_category);
             await Navigation.PopModalAsync();
+
         }
         catch (Exception ex)
         {

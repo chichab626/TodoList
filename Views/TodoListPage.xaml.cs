@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using TodoList.Data;
 
@@ -15,6 +16,20 @@ public partial class TodoListPage : ContentPage
         InitializeComponent();
         _viewModel = new TodoListViewModel(restService);
         BindingContext = _viewModel;
+
+        _restService.CategoryUpdated += OnCategoryUpdated;
+    }
+
+    private void OnCategoryUpdated(Category updatedCategory)
+    {
+        Debug.WriteLine("Subscribed again");
+        foreach (var todo in _viewModel.Todos)
+        {
+            if (todo.Category.Id == updatedCategory.Id)
+            {
+                todo.Category = updatedCategory;
+            }
+        }
     }
 
     private async void OnAddTodoClicked(object sender, EventArgs e)
@@ -86,7 +101,9 @@ public partial class TodoListPage : ContentPage
                 Description = todo.Description,
                 IsCompleted = e.Value,
                 CategoryId = todo.Category.Id,
-                CreatedAt = todo.CreatedAt
+                CreatedAt = todo.CreatedAt,
+                DueTime = todo.DueTime,
+                DueDate = todo.DueDate
             };
 
             await _restService.SaveTodoAsync(updatedTodo);

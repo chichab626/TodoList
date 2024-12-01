@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -19,6 +20,9 @@ namespace TodoList.Data
 
         public List<TodoItem> TodoItems { get; private set; }
         public List<Category> Categories { get; private set; }
+
+        public event Action<Category> CategoryUpdated;
+        public event Action<int> TodoItemUpdated;
 
         public RestService()
         {
@@ -87,6 +91,10 @@ namespace TodoList.Data
             {
                 Console.WriteLine($"Error: {content}");
             }
+            else
+            {
+                TodoItemUpdated?.Invoke(todo.Id);
+            }
 
             return response.IsSuccessStatusCode ? 1 : 0;
         }
@@ -97,6 +105,10 @@ namespace TodoList.Data
         public async Task<int> DeleteTodoAsync(int id)
         {
             var response = await _client.DeleteAsync($"{TodoItemsUrl}{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TodoItemUpdated?.Invoke(id);
+            }
             return response.IsSuccessStatusCode ? 1 : 0;
         }
 
@@ -123,6 +135,11 @@ namespace TodoList.Data
             else  // Update existing Category
             {
                 response = await _client.PutAsJsonAsync($"{CategoriesUrl}{category.Id}", category);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                CategoryUpdated?.Invoke(category);
             }
             return response.IsSuccessStatusCode ? 1 : 0;
         }

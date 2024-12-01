@@ -5,19 +5,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TodoList"
     Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarTitleColor="LightCyan"
     Title="TodoList"    
-    TabBarBackgroundColor="DarkBlue"
-    TabBarForegroundColor="White"
-    TabBarUnselectedColor="LightGray">
+    TabBarBackgroundColor="{StaticResource Primary}"
+    TabBarForegroundColor="{StaticResource Secondary}"
+    TabBarUnselectedColor="{StaticResource Gray500}">
 
     <TabBar>
-        <Tab Title="Calendar" Icon="about_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+        <Tab Title="Calendar" Icon="calendar.png">
+            <ShellContent ContentTemplate="{DataTemplate local:CalendarPage}" />
         </Tab>
-        <Tab Title="To-Do List" Icon="todo_icon.png">
+        <Tab Title="To-Do List" Icon="todo.png">
             <ShellContent ContentTemplate="{DataTemplate local:TodoListPage}" />
         </Tab>
-        <Tab Title="Categories" Icon="categories_icon.png">
+        <Tab Title="Categories" Icon="category.png">
             <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}" />
         </Tab>
     </TabBar>

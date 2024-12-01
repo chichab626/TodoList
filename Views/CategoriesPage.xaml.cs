@@ -90,14 +90,18 @@ public partial class CategoriesPage : ContentPage
         if (category == null) return;
 
         bool answer = await DisplayAlert("Delete Category",
-            "Are you sure you want to delete this category? All todos in this category will be moved to General category.",
+            "Are you sure you want to delete this category?",
             "Yes", "No");
 
         if (!answer) return;
 
         try
         {
-            await _restService.DeleteCategoryAsync(category.Id);
+            var result = await _restService.DeleteCategoryAsync(category.Id);
+            if (result == 0)
+            {
+                throw new Exception("Cannot delete this category. Make sure there are no Todo items in this category.");
+            }
             await LoadCategoriesAsync();
         }
         catch (Exception ex)

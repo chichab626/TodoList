@@ -20,11 +20,12 @@ namespace TodoList
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<RestService>();
-            builder.Services.AddSingleton<DatabaseService>();
-            builder.Services.AddTransient<CategoriesPage>();
-            builder.Services.AddTransient<TodoListPage>();
-            builder.Services.AddTransient<CategoryEditPage>();
-            builder.Services.AddTransient<TodoDetailPage>();
+            //builder.Services.AddSingleton<DatabaseService>();
+            builder.Services.AddSingleton<CalendarPage>();
+            builder.Services.AddSingleton<CategoriesPage>();
+            builder.Services.AddSingleton<TodoListPage>();
+            builder.Services.AddSingleton<CategoryEditPage>();
+            builder.Services.AddSingleton<TodoDetailPage>();
             return builder.Build();
 
         }

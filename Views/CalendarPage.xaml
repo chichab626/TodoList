@@ -1,12 +1,73 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-             x:Class="TodoList.Views.CalendarPage"
-             Title="CalendarPage">
-    <controls:Calendar Day="14"
-        Month="5"
-        Year="2019"
-        VerticalOptions="Fill"
-        HorizontalOptions="Fill"/>
+             x:Class="TodoList.CalendarPage"
+             Title="Calendar">
+    <controls:Calendar
+        Margin="15,3,15,3"
+        Events="{Binding Events}" 
+        DaysTitleColor="{StaticResource Primary}"
+        EventsScrollViewVisible="True"
+        EventIndicatorColor="Red"
+        EventIndicatorSelectedTextColor="Aqua"
+        SelectedDateTextFormat="ddd, dd MMM yyyy"
+        SelectedDateColor="{StaticResource Primary}"
+        SelectedDayBackgroundColor="{StaticResource SecondaryDarkText}"
+        SelectedDayTextColor="Cyan"
+        SelectedTodayTextColor="Green"
+        HorizontalOptions="CenterAndExpand"
+        YearLabelColor="{StaticResource Secondary}"
+        MonthLabelColor="{StaticResource Primary}"
+        >
+
+        <controls:Calendar.EventTemplate>
+            <DataTemplate >
+                <Frame Padding="8" Margin="2" BorderColor="{StaticResource Gray100}" InputTransparent="True">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto" >
+                        <!-- Checkbox for Task Completion -->
+
+                                   
+                        <!-- Main Task Information -->
+                        <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
+                            <Label Text="{Binding DueTime, StringFormat='{0:hh\\:mm}'}" 
+                                 FontSize="10" 
+                                 TextColor="Blue"
+                                 VerticalOptions="Center"
+                                 >
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsDueExpired}" Value="True">
+                                        <Setter Property="TextColor" Value="Red" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label Text="{Binding Title}"
+                               Margin="8, 0, 0,0"
+                               Grid.Column="2"
+                               FontAttributes="None" 
+                               FontSize="Subtitle" 
+                               TextDecorations="{Binding IsCompleted, 
+                                    Converter={StaticResource BoolToStrikethroughConverter}}"    
+                                />
+                        </HorizontalStackLayout>
+
+                        <!-- Category Name -->
+                        <Label Text="{Binding Category.Name}" Grid.Column="3"
+                        FontSize="10" 
+                               VerticalTextAlignment="Start"
+                               Padding="2,0,4,0"
+                        TextColor="{Binding Category.Color}" />
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </controls:Calendar.EventTemplate>
+        <controls:Calendar.EmptyTemplate>
+            <DataTemplate>
+                <StackLayout>
+                    <Label Text="NO EVENTS FOR THE SELECTED DATE" 
+                           HorizontalTextAlignment="Center" 
+                           Margin="0,5,0,5" />
+                </StackLayout>
+            </DataTemplate>
+        </controls:Calendar.EmptyTemplate>
+    </controls:Calendar>
 </ContentPage>

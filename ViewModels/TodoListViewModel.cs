@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using Plugin.Maui.Calendar.Models;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TodoList.Data;
 using TodoList.ViewModels;
+
 
 namespace TodoList;
 
@@ -10,12 +12,14 @@ public class TodoListViewModel : BaseViewModel
     private readonly RestService _restService;
     private ObservableCollection<TodoViewModel> _todos;
     private ObservableCollection<Category> _categories;
+    private EventCollection _events;
     private bool _isRefreshing;
 
     public TodoListViewModel(RestService restService)
     {
         _restService = restService;
         _todos = new ObservableCollection<TodoViewModel>();
+        _events = new EventCollection();
         RefreshCommand = new Command(async () => await LoadTodosAsync());
         LoadTodosAsync();
     }
@@ -23,7 +27,20 @@ public class TodoListViewModel : BaseViewModel
     public ObservableCollection<TodoViewModel> Todos
     {
         get => _todos;
-        set => SetProperty(ref _todos, value);
+        set
+        {
+            if (SetProperty(ref _todos, value))
+            {
+                // Whenever Todos changes, refresh the calendar events
+                LoadTodosIntoCalendar();
+            }
+        }
+    }
+
+    public EventCollection Events
+    {
+        get => _events;
+        set => SetProperty(ref _events, value);
     }
 
     public ObservableCollection<Category> Categories
@@ -72,5 +89,31 @@ public class TodoListViewModel : BaseViewModel
         {
             IsRefreshing = false;
         }
+    }
+
+    private void LoadTodosIntoCalendar()
+    {
+        // Create a new EventCollection each time to trigger UI updates
+        var newEvents = new EventCollection();
+
+        // Group todos by their due date
+        var todosByDate = Todos
+            .Where(t => t.DueDate != default)
+            .GroupBy(t => t.DueDate.Date);
+
+        foreach (var dateGroup in todosByDate)
+        {
+            newEvents[dateGroup.Key] = dateGroup
+
+                .ToList();
+        }
+
+        Events = newEvents;
+    }
+
+    public async Task InitializeAsync()
+    {
+        await LoadTodosAsync();
+        LoadTodosIntoCalendar();
     }
 }
